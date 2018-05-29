@@ -4,6 +4,7 @@
         <meta charset="utf-8"/>
         <title>Slim 3</title>
         <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <script src="/assets/js/vue.js"></script>
         <style>
             body {
                 margin: 50px 0 0 0;
@@ -34,5 +35,17 @@
         <?php else: ?>
             <p>Try <a href="http://www.slimframework.com">SlimFramework</a></p>
         <?php endif; ?>
+        <div id="app">
+            {{ message }}
+        </div>
+
     </body>
 </html>
+
+<?php $viewname = preg_replace('/.php$/', '', basename($_SERVER['SCRIPT_FILENAME'])); ?>
+<?php $D = new \DirectoryIterator($SITE_DIR . 'public/assets/js/'); ?>
+<?php foreach($D as $f): ?>
+    <?php if (preg_match('/' . $viewname . '.js$/m', $f)): ?>
+        <script src="<?=$SITE_URL?>assets/js/<?=$f?>"></script>
+    <?php endif; ?>
+<?php endforeach; ?>
