@@ -11,6 +11,8 @@ $app->get('/[{name}]', function (Request $request, Response $response, array $ar
     $this->logger->info("Slim-Skeleton '/' route");
     $args['SITE_DIR'] = '/home/wwwdocs/dps/';
     $args['SITE_URL'] = 'http://dps/';
+    $args['vuename']  = 'login';
+    $args['title']    = 'Login';
 
 
     // Render index view

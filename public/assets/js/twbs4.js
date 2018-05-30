@@ -1,0 +1,1 @@
+/home/wwwdocs/dps/vendor/twbs/bootstrap/dist/js/bootstrap.min.js

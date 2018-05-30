@@ -1,0 +1,1 @@
+/home/wwwdocs/dps/vendor/components/jquery/jquery.min.js
