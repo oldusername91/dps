@@ -1,4 +1,5 @@
 <?php
+define ('APP_ROOT', '/home/wwwdocs/dps');
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
@@ -15,5 +16,26 @@ return [
             'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
+        'doctrine' => [
+             // if true, metadata caching is forcefully disabled
+             'dev_mode' => true,
+
+             // path where the compiled metadata info will be cached
+             // make sure the path exists and it is writable
+             'cache_dir' => APP_ROOT . '/var/doctrine',
+
+             // you should add any other path containing annotated entity classes
+             'metadata_dirs' => [APP_ROOT . '/src/Entity'],
+
+             'connection' => [
+                 'driver'   => 'pdo_pgsql',
+                 'host'     => 'localhost',
+                 'port'     => 5432,
+                 'dbname'   => 'slimapp',
+                 'user'     => 'slimapp',
+                 'password' => 'password',
+                 'charset'  => 'utf-8'
+             ]
+         ]
     ],
 ];

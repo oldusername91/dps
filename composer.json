@@ -10,8 +10,11 @@
         "slim/php-view": "^2.0",
         "monolog/monolog": "^1.17",
         "twbs/bootstrap": "^4.1",
-        "bryanjhv/slim-session": "^3.5",
-        "components/jquery": "^3.3"
+        "bryanjhv/slim-session": "~3.0",
+        "components/jquery": "^3.3",
+        "slim/csrf": "^0.8.2",
+        "fortawesome/font-awesome": "^4.7",
+        "doctrine/orm": "^2.6"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8 < 6.0"

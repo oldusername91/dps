@@ -7,14 +7,23 @@
         <script src="/assets/js/jquery3.js"></script>
         <script   src="/assets/js/twbs4.js"></script>
         <link rel="stylesheet" href="/assets/css/twbs4.css">
+        <link rel="stylesheet" href="/assets/css/main.css?<?=rand()?>">
+        <link rel="stylesheet" href="/assets/css/fa.css">
     </head>
     <body>
         <div id="app">
-            {{ message }}
+            <header-main></header-main>
+            <div class="container-fluid">
+                <login-form></login-form>
+            </div>
         </div>
     </body>
 </html>
+<script src="http://dps/assets/js/index.js"></script>
 
+
+
+<?php if (0): ?>
 <?php $viewname = preg_replace('/.php$/', '', basename($_SERVER['SCRIPT_FILENAME'])); ?>
 <?php $D = new \DirectoryIterator($SITE_DIR . 'public/assets/js/'); ?>
 <?php foreach($D as $f): ?>
@@ -22,3 +31,4 @@
 <script src="<?=$SITE_URL?>assets/js/<?=$f?>"></script>
 <?php endif; ?>
 <?php endforeach; ?>
+<?php endif; ?>
