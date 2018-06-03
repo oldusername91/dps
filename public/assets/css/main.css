@@ -12,7 +12,7 @@
     font-size:22px;
 }
 
-.login-form{
+.login-form, .register-form{
     max-width: 500px;
     margin: 0 auto;
     margin-top: 75px;
@@ -20,11 +20,11 @@
 
 }
 
-.login-form input{
+.login-form input, .register-form input{
     width:100%;
 }
 
-.register-instead{
+.register-instead, .login-instead{
     margin-top:15px;
     font-size:12px;
 }

@@ -1,5 +1,19 @@
 <?php
-define ('APP_ROOT', '/home/wwwdocs/dps');
+
+// We read environment variables from a file on disk.
+if ( ! file_exists('../ENV'))
+{
+    error_log("No 'ENV' file exists in the base directory. This is required.");
+}
+
+$ENVVARS = json_decode(file_get_contents('../ENV'), true);
+foreach ($ENVVARS as $K => $V)
+{
+    define ($K, $V);
+}
+
+
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production

@@ -1,4 +1,6 @@
 <?php
+
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\EntityManager;
@@ -48,4 +50,10 @@ $container['em'] = function (Container $container): EntityManager {
         $container['settings']['doctrine']['connection'],
         $config
     );
+};
+
+
+// For each controller.
+$container['App\Controller\LoginRegister'] = function ($c) {
+    return new App\Controller\LoginRegister($c->get('renderer'), $c->get('em'), $c->get('logger'));
 };
