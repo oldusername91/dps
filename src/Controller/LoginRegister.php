@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 class LoginRegister extends SVController
 {
     // /login
@@ -23,7 +22,7 @@ class LoginRegister extends SVController
 
 
         $POST    = $request->getParsedBody();
-        $userrep = $this->em->getRepository('App\Entity\User');
+        $userrep = $this->em->getRepository('\App\Entity\User');
         $user    = $userrep->findOneBy(array('email' => $POST['email']));
 
         if ($user)
@@ -34,8 +33,7 @@ class LoginRegister extends SVController
 
             if (password_verify($submitted, $pwdhash))
             {
-                $response->write("Congrats you logged on.");
-                return $this->renderer->render($response, 'index.phtml', $args);
+                return $response->withRedirect($this->router->pathFor('root'), 303);
             }
 
         }
@@ -66,17 +64,55 @@ class LoginRegister extends SVController
 
 
         $POST    = $request->getParsedBody();
-        $userrep = $this->em->getRepository('App\Entity\User');
+        $userrep = $this->em->getRepository('\App\Entity\User');
 
         $newuser = new App\Entity\User();
         $newuser->setEmail($POST['email']);
         $newuser->setPassword(password_hash($POST['password'], PASSWORD_DEFAULT));
         $newuser->setJoined(new \DateTime());
+        $newuser->setRole('member');
 
         $this->em->persist($newuser);
         $this->em->flush();
 
 
         return $this->renderer->render($response, 'register.phtml', $args);
+    }
+
+    // /members
+    public function GetMembers($request, $response, $args)
+    {
+
+        $this->logger->info("GET /members");
+        $args['title']    = 'Manage members';
+
+
+
+        $userrep = $this->em->getRepository('\App\Entity\User');
+
+        $users   = $userrep->findAll();
+        $args['users'] = $users;
+
+
+        return $this->renderer->render($response, 'members.phtml', $args);
+    }
+
+
+    // /members
+    public function GetLogout($request, $response, $args)
+    {
+
+        $this->logger->info("GET /members");
+        $args['title']    = 'Manage members';
+
+
+
+        $userrep = $this->em->getRepository('\App\Entity\User');
+
+        $users   = $userrep->findAll();
+        $args['users'] = $users;
+
+
+        return $this->renderer->render($response, 'members.phtml', $args);
     }
 }

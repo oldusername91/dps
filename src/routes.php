@@ -14,7 +14,22 @@ function (Request $request, Response $response, array $args)
 {
     $args['title']    = 'Home';
     return $this->renderer->render($response, 'index.phtml', $args);
+})->setName("root");
+
+
+
+
+$app->get('/oo', function (Request $request, Response $response, array $args)
+{
+    $args['title']    = 'Oath2';
+
+    $args['petrol'] = $this->FuelAPI->GetFuelPricesForLocation(2210);
+
+
+    return $this->renderer->render($response, 'oo.phtml', $args);
 });
+
+
 
 
 $app->get('/login', 'App\Controller\LoginRegister:GetLogin');

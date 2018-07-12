@@ -1,12 +1,12 @@
 <?php
 
 // We read environment variables from a file on disk.
-if ( ! file_exists('../ENV'))
+if ( ! file_exists(__DIR__ . '/../.env'))
 {
-    error_log("No 'ENV' file exists in the base directory. This is required.");
+    error_log("No '.env' file exists in the base directory. This is required.");
 }
 
-$ENVVARS = json_decode(file_get_contents('../ENV'), true);
+$ENVVARS = json_decode(file_get_contents(__DIR__ . '/../.env'), true);
 foreach ($ENVVARS as $K => $V)
 {
     define ($K, $V);

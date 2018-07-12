@@ -14,7 +14,8 @@
         "components/jquery": "^3.3",
         "slim/csrf": "^0.8.2",
         "fortawesome/font-awesome": "^4.7",
-        "doctrine/orm": "^2.6"
+        "doctrine/orm": "^2.6",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8 < 6.0"
@@ -22,7 +23,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "App\\": "src/"
+            "App\\": "src/",
+            "App\\Resources\\": "src/Resources"
         }
     },
     "config": {

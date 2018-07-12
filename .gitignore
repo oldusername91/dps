@@ -4,4 +4,4 @@
 /node_modules/*
 composer.phar
 var/*
-ENV
+.env

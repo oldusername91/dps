@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
 use Slim\Container;
+use GuzzleHttp\Client;
+use App\Resources\NSWFuelAPI;
 // DIC configuration
 
 $container = $app->getContainer();
@@ -52,8 +54,25 @@ $container['em'] = function (Container $container): EntityManager {
     );
 };
 
+$container['session'] = function ($c) {
+  return new \SlimSession\Helper;
+};
+
+
+$container['GuzzleForNSWAPI'] = function ($c) {
+    $client = new Client([
+      // Base URI is used with relative requests
+      'base_uri' => 'https://api.onegov.nsw.gov.au'
+  ]);
+  return $client;
+};
+
+
+$container['FuelAPI'] = function ($c) {
+    return new NSWFuelAPI($c->GuzzleForNSWAPI, $c->logger);
+};
 
 // For each controller.
 $container['App\Controller\LoginRegister'] = function ($c) {
-    return new App\Controller\LoginRegister($c->get('renderer'), $c->get('em'), $c->get('logger'));
+    return new App\Controller\LoginRegister($c->get('router'), $c->get('renderer'), $c->get('em'), $c->get('logger'));
 };

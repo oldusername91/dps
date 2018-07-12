@@ -18,7 +18,7 @@ class User
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, unique=true)
      */
     protected $email;
 
@@ -31,6 +31,11 @@ class User
      * @ORM\Column(type="datetime", length=100)
      */
     protected $joined;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    protected $role;
 
 
 
@@ -62,6 +67,11 @@ class User
         return $this->joined;
     }
 
+    public function getRole()
+    {
+        return $this->role;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -82,5 +92,11 @@ class User
     public function setJoined($date)
     {
         $this->joined = $date;
+    }
+
+
+    public function setRole($role)
+    {
+        $this->role = $role;
     }
 }
