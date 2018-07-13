@@ -5,3 +5,7 @@
 composer.phar
 var/*
 .env
+.buildpath
+.project
+.settings
+src/Resources/APItoken
