@@ -42,6 +42,27 @@ class NSWFuelAPI
     
     
     /**
+     * Where we save our token and expiry on disk.
+     * @var string
+     */
+    protected $referencefilepath = __DIR__ . '/referencedata';
+
+    
+    /**
+     * The fuel API reference data.
+     * @var array
+     */
+    protected $referencedata;
+    
+    
+    /**
+     * UTC / GMT timestamp for when we requested 
+     * the reference data last.
+     * @var string
+     */
+    protected $lastreferencerequesttime = '01/01/2000 00:00:00 AM';
+    
+    /**
      * Guzzle client to the NSW Fuel API
      * @var \GuzzleHttp\Client
      */
@@ -91,11 +112,87 @@ class NSWFuelAPI
             $this->logger->info("No token file exists.");
             $this->RetrieveToken();
         }
+        
+        
+        /* 
+         * Load our reference data from file (if it exists).
+         */
+        if ($refdata = file_get_contents($this->referencefilepath))
+        {
+            $this->logger->info("Reference exists on disk. Reading in.");
+            
+            $rdata = json_decode($refdata);
+            $this->referencedata = $rdata->referencedata;
+            $this->lastreferencerequesttime = $rdata->lastreferencerequesttime;
+        }
 
+        $this->RetrieveReferenceData();
 
     }
 
+    
+    /**
+     * RetrieveReferenceData()
+     *
+     * Requests new reference data. Updates reference
+     * data file if required.
+     * 
+     *
+     * @return array  -  the reference data.
+     */
+    public function RetrieveReferenceData()
+    {
+        /*
+         *
+         */
+        $this->logger->info("Checking if we need new reference data. Last time the request was sent: " . $this->lastreferencerequesttime);        
+        $timerequested = gmdate('d/m/Y h:i:s A');
+        /*
+         * Send the request
+         */
+        $apiresponse = $this->API->request('GET', '/FuelCheckRefData/v1/fuel/lovs', [
+            'headers' => [
+                'apikey'            => $this->key,
+                'transactionid'     => '5',
+                'requesttimestamp'  => $timerequested,
+                'if-modified-since' => $this->lastreferencerequesttime,
+                'Authorization'     => 'Bearer ' . $this->getToken(),
+                'Content-Type'      => 'application/json; charset=utf-8'
+        ],
 
+        ]);
+        
+        
+        $this->logger->info("Response code from request for reference data:" . $apiresponse->getStatusCode());
+        $responsedata = json_decode($apiresponse->getBody()->getContents()); 
+        
+        
+        if ( $this->AnyNewReferenceData($responsedata))
+        {
+            $this->logger->info("Reference data requires updating.");
+            
+            
+            /*
+             * Save the reference data to disk.
+             * @TODO Change this to add items to the file on disk if required.
+             */
+            $filed = array(
+                'referencedata'            => $responsedata,
+                'lastreferencerequesttime' => $timerequested
+            );
+            
+            file_put_contents($this->referencefilepath, json_encode($filed));
+            
+            $this->referencedata = $responsedata;
+            $this->lastreferencerequesttime = $timerequested;
+        }
+        else
+        {
+            $this->logger->info("Reference data is up to date.");
+        }
+    }
+    
+    
     /**
      * GetToken()
      * 
@@ -208,21 +305,14 @@ class NSWFuelAPI
     function GetFuelPricesForLocation($location)
     {
         /* 
-         * 
-         */
-        $token = 'Bearer ' . $this->accesstoken;
-        $time  = date('d/m/Y h:i:s A');
-        $endpoint = '/FuelPriceCheck/v1/fuel/prices/location';
-
-        
-        /* 
          * Send the request
          */
-        $apiresponse = $this->API->request('POST', $endpoint, ['headers' => [
+        $apiresponse = $this->API->request('POST', '/FuelPriceCheck/v1/fuel/prices/location', [
+            'headers' => [
                 'apikey'           => $this->key,
                 'transactionid'    => '2',
-                'requesttimestamp' => $time,
-                'Authorization'    => $token
+                'requesttimestamp' => gmdate('d/m/Y h:i:s A'),
+                'Authorization'    => 'Bearer ' . $this->getToken()
             ],
             'form_params' => [
                 "fueltype" => "E10",
@@ -234,10 +324,31 @@ class NSWFuelAPI
         
         return json_decode($apiresponse->getBody()->getContents());
     }
-
-
-    function GetReferenceData()
+    
+    
+    /**
+     * AnyNewReferenceData
+     * 
+     * Tells us if any reference data is new.
+     * 
+     * @param $data - The reference data.
+     */
+    public function AnyNewReferenceData($data)
     {
-
+        /* 
+         * A bunch of properties, each have an 'items'
+         * property that is an array. If any have values
+         * in them, then we have new data.
+         */
+        $pprops = get_object_vars($data);
+        
+        foreach ($pprops as $p)
+        {
+            if (count($p->items) > 0)
+            {
+                return true;
+            }
+        }
+        
     }
 }
