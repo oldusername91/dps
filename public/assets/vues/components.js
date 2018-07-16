@@ -46,3 +46,16 @@ Vue.component('submit-btn', {
     <button class="btn">Submit</button>
     `
 })
+
+
+Vue.component('petrol-station-card', {
+    props : ['station'],
+    template : `
+    <div style="display:flex;">
+	<div class="ps_name">
+	  <h4>{{station.name}}</h4>
+	</div>
+	<div class="ps_prices"></div>
+    </div>
+    `
+})

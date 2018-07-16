@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/oldusername91/dps/issues"
   },
-  "homepage": "https://github.com/oldusername91/dps#readme"
+  "homepage": "https://github.com/oldusername91/dps#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "vue": "^2.5.16"
+  }
 }

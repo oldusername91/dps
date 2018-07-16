@@ -322,7 +322,7 @@ class NSWFuelAPI
         
         $this->logger->info("NSWFuelAPI::GetFuelPricesForLocation(): " . $apiresponse->getStatusCode() . " - with token " . $token . ", time " . $time . ".");
         
-        return json_decode($apiresponse->getBody()->getContents());
+        return $apiresponse->getBody()->getContents();
     }
     
     

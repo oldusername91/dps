@@ -19,15 +19,22 @@ function (Request $request, Response $response, array $args)
 
 
 
-$app->get('/oo', function (Request $request, Response $response, array $args)
+$app->get('/location/{location}', function (Request $request, Response $response, array $args)
 {
-    $args['title']    = 'Oath2';
-
-    $args['petrol'] = $this->FuelAPI->GetFuelPricesForLocation(2210);
-
-
-    return $this->renderer->render($response, 'oo.phtml', $args);
+    return $this->FuelAPI->GetFuelPricesForLocation($args['location']);
+    //return $this->renderer->render($response, 'oo.phtml', $args);
 });
+
+
+$app->get('/location', function (Request $request, Response $response, array $args)
+{
+    $args['title']    = 'Location search';
+    
+    
+    
+    return $this->renderer->render($response, 'location.phtml', $args);
+});
+
 
 
 
