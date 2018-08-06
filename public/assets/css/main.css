@@ -28,3 +28,15 @@
     margin-top:15px;
     font-size:12px;
 }
+.tabs{
+    display:inline-block;
+    border:1px solid black;
+    border-radius:5px;
+    padding: 2px 6px;
+    cursor:pointer;
+}
+
+.tabs.active{
+    background-color:black;
+    color:white;
+}

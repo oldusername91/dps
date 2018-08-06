@@ -29,14 +29,21 @@ $app->get('/location/{location}', function (Request $request, Response $response
 $app->get('/location', function (Request $request, Response $response, array $args)
 {
     $args['title']    = 'Location search';
-    
-    
-    
+
+
+
     return $this->renderer->render($response, 'location.phtml', $args);
 });
 
 
+$app->get('/xx', function (Request $request, Response $response, array $args)
+{
+    $args['title']    = 'Just a place';
 
+
+
+    return $this->renderer->render($response, 'xx.phtml', $args);
+});
 
 
 $app->get('/login', 'App\Controller\LoginRegister:GetLogin');
